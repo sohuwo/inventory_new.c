@@ -5,6 +5,7 @@
 //Enter name of output file:inventory.dat
 //Enter operation code:r
 //Enter name of output file:inventory.dat
+//update save()&recover()
 
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
@@ -215,7 +216,6 @@ void save()
 		return;
 	}
 
-	putc(num_parts, fp);
 	fwrite(inventory, sizeof(inventory[0]), num_parts, fp);
 	fclose(fp);
 	printf("Save successfully\n");
@@ -241,9 +241,9 @@ void recover()
 		return;
 	}
 
-	num_parts = getc(fp);
-	fread(inventory, sizeof(inventory[0]), num_parts, fp);
-	fclose(fp);
+	num_parts = 0;
+	while (fread(&inventory[num_parts], sizeof(struct part), 1, fp) != 0)
+		num_parts++;fclose(fp);
 	printf("Recover successfully\n");
 
 	return;
